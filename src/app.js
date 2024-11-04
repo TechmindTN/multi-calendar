@@ -2,16 +2,43 @@
 const express = require('express');
 const authRoutes = require('./routes/auth'); // Import the auth routes
 const userRoutes = require('./routes/user'); 
+const roleRoutes = require('./routes/role'); 
+const noteRoutes = require('./routes/note'); 
+
+const privilegeRoutes = require('./routes/privilege'); 
+
 const bodyParser = require('body-parser');
+// const employeeRoutes = require('./routes/employee'); // Add employee routes
+// const projectRoutes = require('./routes/project'); // Add project routes
+// const taskRoutes = require('./routes/task'); // Add task routes
+const cors = require('cors');
+
+
+// const departmentRoutes = require('./routes/department'); // Add department routes
+// const durationTypeRoutes = require('./routes/durationType'); // Add durationType routes
 
 const sequelize = require('./models/index')
 const app = express();
 app.use(bodyParser.json());
 
+app.use(cors());
+
 
 // Use the imported routes
 app.use('/auth', authRoutes); // All /auth routes will be handled by authRoutes
 app.use('/user', userRoutes); // All /user routes will be handled by userRoutes
+app.use('/role', roleRoutes); // All /user routes will be handled by userRoutes
+app.use('/privilege', privilegeRoutes); // All /user routes will be handled by userRoutes
+app.use('/note', noteRoutes); // All /user routes will be handled by userRoutes
+
+
+// app.use('/employee', employeeRoutes); // Employee routes
+// app.use('/department', departmentRoutes); // Department routes
+// app.use('/durationType', durationTypeRoutes); // Department routes
+// app.use('/project', projectRoutes); // Department routes
+// app.use('/task', taskRoutes); // Department routes
+
+
 
 
  // Sync DB and Start Server

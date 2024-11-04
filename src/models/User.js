@@ -1,6 +1,7 @@
 // models/User.js
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./index');  // Import the Sequelize instance
+const Role = require('./Role'); // Import the Role model
 
 const User = sequelize.define('User', {
   id: {
@@ -9,9 +10,18 @@ const User = sequelize.define('User', {
     primaryKey: true
   },
   username: DataTypes.STRING,
+  provider: DataTypes.STRING,
   password: DataTypes.STRING,
-  birthday: DataTypes.DATE,
+  // birthday: DataTypes.DATE,
   created: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.NOW
+  },
+  last_updated: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.NOW
+  },
+  last_login: {
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW
   },
@@ -20,8 +30,12 @@ const User = sequelize.define('User', {
   access_token: DataTypes.STRING,
   refresh_token: DataTypes.STRING
 }, {
-  tableName: 'users',
+  tableName: 'User',
   timestamps: false
 });
+
+// Role.hasMany(User, { foreignKey: 'id_role', as: 'role' });
+// Role.hasMany(User, { foreignKey: 'id_role', as: 'role' });
+User.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
 
 module.exports = User;
