@@ -1,7 +1,7 @@
 // models/Note.js
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./index');  // Import the Sequelize instance
-const Employee = require('./Note'); // Import the Note model
+const User = require('./User'); // Import the Note model
 
 const Note = sequelize.define('Note', {
   id: {
@@ -36,6 +36,7 @@ const Note = sequelize.define('Note', {
   tableName: 'Note',
   timestamps: false
 });
+Note.belongsTo(User, { foreignKey: 'id_user', as: 'user' });
 
 // Note.hasOne(Note);
 // Note.hasMany(Note, { foreignKey: 'id_note', as: 'note' });

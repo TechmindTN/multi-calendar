@@ -2,6 +2,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./index');  // Import the Sequelize instance
 const Role = require('./Role'); // Import the Role model
+const Company = require('./Company'); // Import the Role model
+
 
 const User = sequelize.define('User', {
   id: {
@@ -37,5 +39,5 @@ const User = sequelize.define('User', {
 // Role.hasMany(User, { foreignKey: 'id_role', as: 'role' });
 // Role.hasMany(User, { foreignKey: 'id_role', as: 'role' });
 User.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
-
+User.belongsTo(Company, { foreignKey: 'id_company', as: 'company' });
 module.exports = User;
