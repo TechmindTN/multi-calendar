@@ -1,5 +1,7 @@
 // routes/user.js
 const User = require('../models/User'); // Adjust the path to your model
+const Role = require('../models/Role'); // Adjust the path to your model
+
 // const authenticateJWT = require('../middleware/authMiddleware'); // Protect routes
 
 // const app = express();
@@ -17,7 +19,13 @@ exports.createUser= async (req, res) => {
   // READ all Users
   exports.getUsers= async (req, res) => {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll(
+       { include: {
+          model: Role,
+        as: 'role', // Ensure this matches your alias in the association
+        // attributes: ['id', 'position', 'department'], // Select only needed fields
+        }}
+      );
       res.status(200).json(users);
     } catch (err) {
       res.status(500).json({ error: err.message });

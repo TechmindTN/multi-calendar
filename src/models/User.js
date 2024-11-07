@@ -11,9 +11,16 @@ const User = sequelize.define('User', {
     autoIncrement: true,
     primaryKey: true
   },
-  username: DataTypes.STRING,
+  username: {
+    type:DataTypes.STRING,
+    allowNull:false
+  },
   provider: DataTypes.STRING,
-  password: DataTypes.STRING,
+  password: {
+    type:DataTypes.STRING,
+    allowNull:false
+
+  },
   // birthday: DataTypes.DATE,
   created: {
     type: DataTypes.DATE,

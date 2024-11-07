@@ -13,9 +13,14 @@ const bodyParser = require('body-parser');
 const employeeRoutes = require('./routes/employee'); // Add employee routes
 const scheduleRoutes = require('./routes/schedule'); // Add employee routes
 const departmentRoutes = require('./routes/department'); // Add employee routes
+const fieldRoutes = require('./routes/field'); // Add employee routes
+const paymentMethodRoutes = require('./routes/paymentMethod'); // Add employee routes
+const paymentRoutes = require('./routes/payment'); // Add employee routes
 
-// const projectRoutes = require('./routes/project'); // Add project routes
-// const taskRoutes = require('./routes/task'); // Add task routes
+const projectRoutes = require('./routes/project'); // Add project routes
+const taskRoutes = require('./routes/task'); // Add task routes
+const commentRoutes = require('./routes/comment'); // Add task routes
+
 const cors = require('cors');
 
 
@@ -39,12 +44,17 @@ app.use('/feedback', feedbackRoutes); // All /user routes will be handled by use
 
 app.use('/schedule', scheduleRoutes); // Employee routes
 app.use('/company', companyRoutes); // Employee routes
+app.use('/field', fieldRoutes); // Employee routes
 
 app.use('/employee', employeeRoutes); // Employee routes
 app.use('/department', departmentRoutes); // Department routes
+app.use('/paymentMethod', paymentMethodRoutes); // Department routes
+app.use('/payment', paymentRoutes); // Department routes
+
 // app.use('/durationType', durationTypeRoutes); // Department routes
-// app.use('/project', projectRoutes); // Department routes
-// app.use('/task', taskRoutes); // Department routes
+app.use('/project', projectRoutes); // Department routes
+app.use('/task', taskRoutes); // Department routes
+app.use('/comment', commentRoutes); // Department routes
 
 
 

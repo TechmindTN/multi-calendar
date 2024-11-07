@@ -1,7 +1,7 @@
 // models/Company.js
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./index');  // Import the Sequelize instance
-const Employee = require('./Company'); // Import the Company model
+const Field = require('./Field'); // Import the Company model
 
 const Company = sequelize.define('Company', {
   id: {
@@ -35,5 +35,5 @@ const Company = sequelize.define('Company', {
 // Company.hasMany(Company, { foreignKey: 'id_company', as: 'company' });
 // Employee.belongsTo(Company, { foreignKey: 'company_id', as: 'company' });
 // Company.belongsTo(User, { foreignKey: 'id_user', as: 'user' });
-
+Company.belongsTo(Field, { foreignKey: 'id_field', as: 'field' });
 module.exports = Company;
