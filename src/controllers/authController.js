@@ -25,24 +25,39 @@ exports.register = async (req, res) => {
     if (existingEmail) {
       return res.status(400).json({ error: 'Email already used' });
     }
+    // if(!user.role){
+
+    // }
     // const existingPhone = await User.findOne({ where: { phone } });
     // if (existingUser) {
     //   return res.status(400).json({ error: 'Phone already used' });
     // }
-
+    id_role=req.body.role
+    // role=Role.findOne({where:{id_role}})
+    
+    provider=req.body.provider
+    company=req.body.id_company
+    console.log(req.body)
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       username,
       password: hashedPassword,
       email,
       phone,
+      id_role,
+      provider,
+      company
     });
 
     res.status(201).json({
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      phone: newUser.phone,
+      newUser,
+      // id: newUser.id,
+      // username: newUser.username,
+      // email: newUser.email,
+      // phone: newUser.phone,
+      // role: newUser.role,
+      // provider: newUser.provider,
+      // company: newUser.company,
       message: 'User registered successfully',
     });
   } catch (error) {
@@ -77,7 +92,7 @@ exports.login = async (req, res) => {
 
     user.access_token = token;
     await user.save();
-    console.log(user)
+    // console.log(user)
     res.json({ message: 'Login successful' ,token ,user});
   } catch (error) {
     console.error(error);
