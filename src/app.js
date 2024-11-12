@@ -20,6 +20,7 @@ const paymentRoutes = require('./routes/payment'); // Add employee routes
 const projectRoutes = require('./routes/project'); // Add project routes
 const taskRoutes = require('./routes/task'); // Add task routes
 const commentRoutes = require('./routes/comment'); // Add task routes
+const imageRoutes = require('./routes/image'); // Add task routes
 
 const cors = require('cors');
 
@@ -55,9 +56,44 @@ app.use('/payment', paymentRoutes); // Department routes
 app.use('/project', projectRoutes); // Department routes
 app.use('/task', taskRoutes); // Department routes
 app.use('/comment', commentRoutes); // Department routes
+app.use('/image', imageRoutes); // Department routes
+const multer = require('multer');
+const path = require('path');
 
+// Configure Multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Directory where the files will be saved
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Add timestamp to file name
+  }
+});
 
+// Set up the upload
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // Limit to 2MB
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimeType = fileTypes.test(file.mimetype);
+    if (extname && mimeType) {
+      return cb(null, true);
+    } else {
+      cb('Error: Images only!');
+    }
+  }
+});
 
+// Endpoint to handle image upload
+app.post('/upload', upload.single('image'), (req, res) => {
+  try {
+    res.send({ message: 'Image uploaded successfully', file: req.file });
+  } catch (error) {
+    res.status(400).send({ message: 'Error uploading image', error });
+  }
+});
 
  // Sync DB and Start Server
  const PORT = process.env.PORT || 3000;
