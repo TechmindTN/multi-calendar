@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Role = require('../models/Role');
+const Employee = require('../models/Employee');
+const Department = require('../models/Department');
+const Company = require('../models/Company');
 
 require('dotenv').config();
 
@@ -93,8 +96,34 @@ exports.login = async (req, res) => {
     user.access_token = token;
     await user.save();
     // console.log(user)
-    res.json({ message: 'Login successful' ,token ,user});
+    user_id=user.id
+    // console.log(user.role_id)
+    if(user.role_id==3){
+      const employee=await Employee.findOne({where:{id_user:user_id},
+      include:{
+        model:Department,
+        as:'department'
+      }
+      })
+      res.json({ message: 'Login successful' ,token ,user,employee});
+    }
+    
+    else if(user.role_id==1){
+      // console.log('aaaa')
+      const company=await Company.findByPk(user.id_company)
+      // console.log(company)
+      res.json({ message: 'Login successful' ,token ,user,company});
+    }
+    else if(user.role_id==2){
+      res.json({ message: 'Login successful' ,token ,user});
+    }
+    else{
+      res.json({ message: 'Login successful' ,token ,user});
+    }
+    
+    // res.json({ message: 'Login successful' ,token ,user});
   } catch (error) {
+    
     console.error(error);
     res.status(500).json({ error: 'An error occurred during login' });
   }

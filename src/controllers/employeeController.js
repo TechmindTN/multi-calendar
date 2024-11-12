@@ -5,26 +5,36 @@ const Department = require('../models/Department');
 
 // Create a new employee
 exports.createEmployee = async (req, res) => {
-  const { name, user_id, id_department } = req.body;
+  const { name, id_user, id_department } = req.body;
 
   try {
     // Make sure the user and department exist
-    const user = await User.findByPk(user_id);
+    console.log(id_user)
+    const data=req.body
+    const user = await User.findByPk(id_user);
     // const department = await Department.findByPk(id_department);
 
     if (!user
       //  || 
       // !department
     ) {
-      return res.status(400).json({ error: 'Invalid user or department' });
+      return res.status(400).json({ error: 'Invalid user' });
     }
+    if(req.body.id_department){
+      const department = await Department.findByPk(id_department);
+    if(!department){
+      return res.status(400).json({ error: 'Invalid department' });
+    }
+    }
+    
 
     // Create the employee record
-    const employee = await Employee.create({
-      name,
-      user_id,
+    const employee = await Employee.create(
+     data,
+      // name,
+      // user_id,
       // id_department,
-    });
+    );
 
     res.status(201).json({
       message: 'Employee created successfully',
