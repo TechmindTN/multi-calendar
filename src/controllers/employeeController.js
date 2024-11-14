@@ -59,7 +59,7 @@ exports.getAllEmployees = async (req, res) => {
           where:{id_company:req.query.company},
 
         },
-        // { model: Department, as: 'id_department', attributes: ['name'] },
+        { model: Department, as: 'department', },
       ],
     });
     res.json(employees);
@@ -74,7 +74,7 @@ exports.getAllEmployees = async (req, res) => {
           
 
         },
-        // { model: Department, as: 'id_department', attributes: ['name'] },
+        { model: Department, as: 'department', },
       ],
     });
     res.json(employees);
@@ -95,8 +95,13 @@ exports.getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findByPk(id, {
       include: [
-        { model: User, as: 'user', attributes: ['username', 'email'] },
-        // { model: Department, as: 'department', attributes: ['name'] },
+
+        // { model: User, as: 'user' },
+        { model: User, as: 'user', 
+          
+
+        },
+        { model: Department, as: 'department', },
       ],
     });
 

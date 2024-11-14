@@ -1,6 +1,7 @@
 // routes/project.js
 const { where } = require('sequelize');
 const Project = require('../models/Project'); // Adjust the path to your model
+const Company = require('../models/Company');
 // const authenticateJWT = require('../middleware/authMiddleware'); // Protect routes
 
 // const app = express();
@@ -23,13 +24,22 @@ exports.createProject= async (req, res) => {
           {
             where:{
               id_company:req.query.company
+            },
+            include:{
+              model:Company,
+              as:'company'
             }
           }
         );
       res.status(200).json(projects);
       }
       else{
-        const projects = await Project.findAll();
+        const projects = await Project.findAll(
+         { include:{
+            model:Company,
+            as:'company'
+          }}
+        );
       res.status(200).json(projects);
       }
       
@@ -41,7 +51,15 @@ exports.createProject= async (req, res) => {
   // READ Project by ID
   exports.getProject= async (req, res) => {
     try {
-      const project = await Project.findByPk(req.params.id);
+      const project = await Project.findByPk(req.params.id,
+
+        {
+          include:{
+            model:Company,
+            as:'company'
+          }
+        }
+      );
       if (project) {
         res.status(200).json(project);
       } else {

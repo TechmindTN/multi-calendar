@@ -107,7 +107,24 @@ exports.createTask= async (req, res) => {
   // READ Task by ID
   exports.getTask= async (req, res) => {
     try {
-      const task = await Task.findByPk(req.params.id);
+      const task = await Task.findByPk(req.params.id,
+        {
+          include:[
+            {
+              model: Project,
+              as:'project'
+            },
+            {
+              model:User,
+              as: 'created_by',
+            },
+            {
+              model:User,
+              as: 'assigned_to',
+            }
+          ]
+        }
+      );
       if (task) {
         res.status(200).json(task);
       } else {

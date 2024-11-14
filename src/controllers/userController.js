@@ -1,6 +1,7 @@
 // routes/user.js
 const User = require('../models/User'); // Adjust the path to your model
 const Role = require('../models/Role'); // Adjust the path to your model
+const Company = require('../models/Company');
 
 // const authenticateJWT = require('../middleware/authMiddleware'); // Protect routes
 
@@ -26,21 +27,33 @@ exports.createUser= async (req, res) => {
             where:{
               id_company:req.query.company
             },
-            include: {
+            include: [{
              model: Role,
            as: 'role', // Ensure this matches your alias in the association
            // attributes: ['id', 'position', 'department'], // Select only needed fields
-           }}
+           
+           },
+          {
+            model:Company,
+            as: 'company'
+          }
+          ]}
          );
          res.status(200).json(users);
       }
       else{
         const users = await User.findAll(
-          { include: {
-             model: Role,
-           as: 'role', // Ensure this matches your alias in the association
-           // attributes: ['id', 'position', 'department'], // Select only needed fields
-           }}
+          {include: [{
+            model: Role,
+          as: 'role', // Ensure this matches your alias in the association
+          // attributes: ['id', 'position', 'department'], // Select only needed fields
+          
+          },
+         {
+           model:Company,
+           as: 'company'
+         }
+         ]}
          );
          res.status(200).json(users);
       }
@@ -53,7 +66,21 @@ exports.createUser= async (req, res) => {
   // READ User by ID
   exports.getUser= async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.params.id,
+        {
+          include: [{
+            model: Role,
+          as: 'role', // Ensure this matches your alias in the association
+          // attributes: ['id', 'position', 'department'], // Select only needed fields
+          
+          },
+         {
+           model:Company,
+           as: 'company'
+         }
+         ]
+        }
+      );
       if (user) {
         res.status(200).json(user);
       } else {
