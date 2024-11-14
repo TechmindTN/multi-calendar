@@ -1,5 +1,7 @@
 // routes/task.js
+const Project = require('../models/Project');
 const Task = require('../models/Task'); // Adjust the path to your model
+const User = require('../models/User');
 // const authenticateJWT = require('../middleware/authMiddleware'); // Protect routes
 
 // const app = express();
@@ -17,8 +19,86 @@ exports.createTask= async (req, res) => {
   // READ all Tasks
   exports.getTasks= async (req, res) => {
     try {
-      const tasks = await Task.findAll();
-      res.status(200).json(tasks);
+        if(req.query.project){
+          const tasks = await Task.findAll(
+            {
+              attributes:["id",
+            "title",
+            "color",
+            "description",
+            "status",
+            "attachement",
+            "priority",
+            "duration",
+            "order",
+            "start_date",
+            "last_updated",
+            "created"
+          
+          ],
+          where:
+            {
+              id_project:req.query.project
+            }
+          ,
+              include:[
+                {
+                  model: Project,
+                  as:'project'
+                },
+                {
+                  model:User,
+                  as: 'created_by',
+                },
+                {
+                  model:User,
+                  as: 'assigned_to',
+                }
+              ]
+            }
+          );
+          res.status(200).json(tasks);
+        }
+        else{
+          const tasks = await Task.findAll(
+            {
+              attributes:["id",
+            "title",
+            "color",
+            "description",
+            "status",
+            "attachement",
+            "priority",
+            "duration",
+            "order",
+            "start_date",
+            "last_updated",
+            "created"
+          
+          ],
+          
+          
+              include:[
+                {
+                  model: Project,
+                  as:'project'
+                },
+                {
+                  model:User,
+                  as: 'created_by',
+                },
+                {
+                  model:User,
+                  as: 'assigned_to',
+                }
+              ]
+            }
+          );
+          res.status(200).json(tasks);
+        }
+      
+     
+      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

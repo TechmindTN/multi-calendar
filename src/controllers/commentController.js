@@ -17,8 +17,19 @@ exports.createComment= async (req, res) => {
   // READ all Comments
   exports.getComments= async (req, res) => {
     try {
-      const comments = await Comment.findAll();
-      res.status(200).json(comments);
+      if(req.query.task){
+        const comments = await Comment.findAll(
+          {
+            where:{id_task:req.query.task}
+          }
+        );
+        res.status(200).json(comments);
+      }
+      else{
+        const comments = await Comment.findAll();
+        res.status(200).json(comments);
+      }
+      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
