@@ -19,14 +19,32 @@ exports.createUser= async (req, res) => {
   // READ all Users
   exports.getUsers= async (req, res) => {
     try {
-      const users = await User.findAll(
-       { include: {
-          model: Role,
-        as: 'role', // Ensure this matches your alias in the association
-        // attributes: ['id', 'position', 'department'], // Select only needed fields
-        }}
-      );
-      res.status(200).json(users);
+      // console.log(req.query.company)
+      if(req.query.company){
+        const users = await User.findAll(
+          { 
+            where:{
+              id_company:req.query.company
+            },
+            include: {
+             model: Role,
+           as: 'role', // Ensure this matches your alias in the association
+           // attributes: ['id', 'position', 'department'], // Select only needed fields
+           }}
+         );
+         res.status(200).json(users);
+      }
+      else{
+        const users = await User.findAll(
+          { include: {
+             model: Role,
+           as: 'role', // Ensure this matches your alias in the association
+           // attributes: ['id', 'position', 'department'], // Select only needed fields
+           }}
+         );
+         res.status(200).json(users);
+      }
+      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

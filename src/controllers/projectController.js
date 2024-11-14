@@ -1,4 +1,5 @@
 // routes/project.js
+const { where } = require('sequelize');
 const Project = require('../models/Project'); // Adjust the path to your model
 // const authenticateJWT = require('../middleware/authMiddleware'); // Protect routes
 
@@ -17,8 +18,21 @@ exports.createProject= async (req, res) => {
   // READ all Projects
   exports.getProjects= async (req, res) => {
     try {
-      const projects = await Project.findAll();
+      if(req.query.company){
+        const projects = await Project.findAll(
+          {
+            where:{
+              id_company:req.query.company
+            }
+          }
+        );
       res.status(200).json(projects);
+      }
+      else{
+        const projects = await Project.findAll();
+      res.status(200).json(projects);
+      }
+      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

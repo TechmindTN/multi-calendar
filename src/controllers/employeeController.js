@@ -49,14 +49,39 @@ exports.createEmployee = async (req, res) => {
 // Get all employees
 exports.getAllEmployees = async (req, res) => {
   try {
+    if(req.query.company){
     const employees = await Employee.findAll({
+      // where:{user.id_company:company},
       include: [
+
         // { model: User, as: 'user' },
-        { model: User, as: 'user', attributes: ['username', 'email'] },
+        { model: User, as: 'user', 
+          where:{id_company:req.query.company},
+
+        },
         // { model: Department, as: 'id_department', attributes: ['name'] },
       ],
     });
     res.json(employees);
+  }
+  else{
+    const employees = await Employee.findAll({
+      // where:{user.id_company:company},
+      include: [
+
+        // { model: User, as: 'user' },
+        { model: User, as: 'user', 
+          
+
+        },
+        // { model: Department, as: 'id_department', attributes: ['name'] },
+      ],
+    });
+    res.json(employees);
+  }
+  
+
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching employees' });

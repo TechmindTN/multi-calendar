@@ -69,7 +69,20 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)); // Add timestamp to file name
   }
 });
+// (async () => {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('Connection established successfully.');
 
+//     // Sync all models with the database
+//     await sequelize.sync({ alter: true });  // alter: true updates the tables
+//     console.log('Database synchronized with model changes.');
+//   } catch (error) {
+//     console.error('Unable to sync database:', error);
+//   } finally {
+//     await sequelize.close();
+//   }
+// })();
 // Set up the upload
 const upload = multer({
   storage: storage,

@@ -1,6 +1,7 @@
 // models/Project.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./index');  // Import the Sequelize instance
+const Company = require('./Company');  // Import the Sequelize instance
 
 const Project = sequelize.define('Project', {
   id: {
@@ -59,5 +60,7 @@ const Project = sequelize.define('Project', {
   tableName: 'Projects', // Table name in the database
   timestamps: false, // Disable Sequelize's automatic `createdAt` and `updatedAt` fields
 });
+
+Project.belongsTo(Company, { foreignKey: 'id_company', as: 'company' });
 
 module.exports = Project;
