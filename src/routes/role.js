@@ -8,6 +8,7 @@ const router = express.Router();
 // Routes for role
 router.get('/', authenticateJWT, roleController.getRoles); // Get role profile (protected)
 router.post('/', authenticateJWT, roleController.createRole); // Get role profile (protected)
+router.post('/hello', authenticateJWT, roleController.createRole); // Get role profile (protected)
 
 router.get('/:id', authenticateJWT, roleController.getRole); // Get role profile (protected)
 
